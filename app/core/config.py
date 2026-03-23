@@ -30,6 +30,18 @@ class Settings(BaseSettings):
         validation_alias="CELERY_RESULT_BACKEND",
     )
 
+    # JWT
+    jwt_secret: str = Field(default="super-secret-key-change-me-in-production", validation_alias="JWT_SECRET")
+    jwt_algorithm: str = Field(default="HS256")
+    access_token_expire_minutes: int = Field(default=15)
+    refresh_token_expire_minutes: int = Field(default=60 * 24 * 7) # 7 days
+    
+    # OTP
+    otp_expire_seconds: int = Field(default=300) # 5 minutes
+    otp_max_attempts: int = Field(default=5)
+    otp_resend_cooldown_seconds: int = Field(default=60)
+    debug_mode: bool = Field(default=False, validation_alias="DEBUG_MODE")
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

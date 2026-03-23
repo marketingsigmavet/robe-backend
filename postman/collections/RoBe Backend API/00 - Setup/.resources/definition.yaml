@@ -1,0 +1,3 @@
+$kind: collection
+name: 00 - Setup
+description: Setup and utility endpoints including health checks, API documentation, and authentication.

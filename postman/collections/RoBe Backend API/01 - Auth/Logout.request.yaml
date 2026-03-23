@@ -1,0 +1,22 @@
+$kind: http-request
+name: Logout
+method: POST
+url: '{{base_url}}/auth/logout'
+order: 4000
+headers:
+  - key: Content-Type
+    value: application/json
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Logout successful", function () {
+          // Clear stored tokens on successful logout
+          pm.collectionVariables.set("access_token", "");
+          pm.collectionVariables.set("refresh_token", "");
+          console.log("Tokens cleared after logout");
+      });

@@ -1,0 +1,24 @@
+$kind: http-request
+name: List Pets
+method: GET
+url: '{{base_url}}/pets/'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response is an array", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("array");
+      });
+
+      // Store first pet ID if available
+      const jsonData = pm.response.json();
+      if (jsonData.length > 0 && jsonData[0].id) {
+          pm.collectionVariables.set("pet_id", jsonData[0].id);
+          console.log("Stored pet_id:", jsonData[0].id);
+      }

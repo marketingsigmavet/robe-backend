@@ -1,0 +1,23 @@
+$kind: http-request
+name: Get User Settings
+method: GET
+url: '{{base_url}}/settings/me'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has settings data", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+      });
+
+      pm.test("Settings has expected fields", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("language");
+          pm.expect(jsonData).to.have.property("notifications_enabled");
+      });

@@ -1,0 +1,10 @@
+$kind: collection
+name: 01 - Auth
+description: |-
+  Authentication endpoints for OTP-based login flow.
+  
+  ## Flow
+  1. Request OTP via email or mobile
+  2. Verify OTP to receive access and refresh tokens
+  3. Use refresh token to get new access tokens
+  4. Logout to invalidate session

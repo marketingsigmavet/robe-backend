@@ -1,0 +1,38 @@
+$kind: http-request
+name: Refresh Token
+method: POST
+url: '{{base_url}}/auth/refresh'
+order: 3000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "refresh_token": "{{refresh_token}}"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has new tokens", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("access_token");
+      });
+
+      // Update stored tokens
+      if (pm.response.code === 200) {
+          const jsonData = pm.response.json();
+          if (jsonData.access_token) {
+              pm.collectionVariables.set("access_token", jsonData.access_token);
+          }
+          if (jsonData.refresh_token) {
+              pm.collectionVariables.set("refresh_token", jsonData.refresh_token);
+          }
+          console.log("Tokens refreshed successfully");
+      }

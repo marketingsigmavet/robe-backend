@@ -1,0 +1,42 @@
+name: RoBe Backend - Local
+values:
+  - key: base_url
+    value: 'http://localhost:8000'
+    enabled: true
+    type: default
+  - key: access_token
+    value: ''
+    enabled: true
+    type: secret
+  - key: refresh_token
+    value: ''
+    enabled: true
+    type: secret
+  - key: test_email
+    value: 'test@example.com'
+    enabled: true
+    type: default
+  - key: pet_id
+    value: ''
+    enabled: true
+    type: default
+  - key: session_id
+    value: ''
+    enabled: true
+    type: default
+  - key: topic_id
+    value: ''
+    enabled: true
+    type: default
+  - key: notification_id
+    value: ''
+    enabled: true
+    type: default
+  - key: recommendation_id
+    value: ''
+    enabled: true
+    type: default
+  - key: dev_otp
+    value: ''
+    enabled: true
+    type: default

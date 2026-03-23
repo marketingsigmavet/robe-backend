@@ -1,0 +1,43 @@
+$kind: collection
+name: RoBe Backend API
+description: |-
+  API collection for RoBe Backend - a pet care application with chat, recommendations, and user management features.
+  
+  ## Authentication
+  This API uses JWT Bearer token authentication. Use the Auth endpoints to obtain tokens via OTP verification.
+  
+  ## Base URL
+  Set the `base_url` variable to your API server address.
+variables:
+  - key: base_url
+    value: 'http://localhost:8000'
+    description: Base URL for the API server
+  - key: access_token
+    value: ''
+    description: JWT access token obtained from auth endpoints
+  - key: refresh_token
+    value: ''
+    description: JWT refresh token for obtaining new access tokens
+  - key: test_email
+    value: 'test@example.com'
+    description: Test email for OTP authentication
+  - key: pet_id
+    value: ''
+    description: ID of a pet for testing
+  - key: session_id
+    value: ''
+    description: Chat session ID for testing
+  - key: topic_id
+    value: ''
+    description: Topic ID for testing
+  - key: notification_id
+    value: ''
+    description: Notification ID for testing
+  - key: recommendation_id
+    value: ''
+    description: Recommendation ID for testing
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{access_token}}'

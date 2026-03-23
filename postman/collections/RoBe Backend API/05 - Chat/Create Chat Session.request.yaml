@@ -1,0 +1,40 @@
+$kind: http-request
+name: Create Chat Session
+method: POST
+url: '{{base_url}}/chat/sessions'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "topic_id": "{{topic_id}}"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200 or 201", function () {
+          pm.expect(pm.response.code).to.be.oneOf([200, 201]);
+      });
+
+      pm.test("Response has session data", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+      });
+
+      pm.test("Session has ID", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("id");
+      });
+
+      // Store session ID
+      if (pm.response.code === 200 || pm.response.code === 201) {
+          const jsonData = pm.response.json();
+          if (jsonData.id) {
+              pm.collectionVariables.set("session_id", jsonData.id);
+              console.log("Created session_id:", jsonData.id);
+          }
+      }

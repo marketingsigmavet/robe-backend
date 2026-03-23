@@ -1,0 +1,41 @@
+$kind: http-request
+name: Request OTP
+method: POST
+url: '{{base_url}}/auth/request-otp'
+order: 1000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "channel": "email",
+      "email": "{{test_email}}"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200 or 201", function () {
+          pm.expect(pm.response.code).to.be.oneOf([200, 201]);
+      });
+
+      pm.test("Response has required fields", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("message");
+          pm.expect(jsonData).to.have.property("expires_in_seconds");
+          pm.expect(jsonData).to.have.property("destination_hint");
+      });
+
+      pm.test("Expiry time is positive", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData.expires_in_seconds).to.be.above(0);
+      });
+
+      // Store dev_otp if available (debug mode)
+      const jsonData = pm.response.json();
+      if (jsonData.dev_otp) {
+          pm.collectionVariables.set("dev_otp", jsonData.dev_otp);
+          console.log("Dev OTP stored:", jsonData.dev_otp);
+      }

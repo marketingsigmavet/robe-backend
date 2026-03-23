@@ -1,0 +1,28 @@
+$kind: http-request
+name: Update User Settings
+method: PATCH
+url: '{{base_url}}/settings/me'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "language": "en",
+      "notifications_enabled": true
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response indicates update", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+          pm.expect(jsonData.status).to.eql("updated");
+      });

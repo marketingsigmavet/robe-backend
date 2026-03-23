@@ -1,0 +1,26 @@
+$kind: http-request
+name: Get Pet by ID
+method: GET
+url: '{{base_url}}/pets/:id'
+order: 3000
+pathVariables:
+  - key: id
+    value: '{{pet_id}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has pet data", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+      });
+
+      pm.test("Pet has required fields", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("id");
+          pm.expect(jsonData).to.have.property("name");
+      });

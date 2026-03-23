@@ -23,5 +23,15 @@ class UserService:
     async def deactivate_user(self, db: AsyncSession, *, db_obj: User) -> User:
         return await user_repository.deactivate_user(db, db_obj=db_obj)
 
+    def is_onboarding_required(self, user: User) -> bool:
+        if not user.full_name:
+            return True
+        return False
+
+    async def update_me(self, db: AsyncSession, *, user: User, update_data: dict[str, Any]) -> User:
+        safe_data = {k: v for k, v in update_data.items() if v is not None and k in [
+            "full_name", "profile_image_url", "country", "city", "preferred_language"
+        ]}
+        return await self.update_user(db, db_obj=user, user_in=safe_data)
 
 user_service = UserService()

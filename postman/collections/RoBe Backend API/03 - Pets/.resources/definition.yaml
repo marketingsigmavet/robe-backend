@@ -1,0 +1,3 @@
+$kind: collection
+name: 03 - Pets
+description: Pet management endpoints for creating, reading, updating, and deleting pets.

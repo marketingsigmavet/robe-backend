@@ -1,0 +1,25 @@
+$kind: http-request
+name: Delete Pet
+method: DELETE
+url: '{{base_url}}/pets/:id'
+order: 5000
+pathVariables:
+  - key: id
+    value: '{{pet_id}}'
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200 or 204", function () {
+          pm.expect(pm.response.code).to.be.oneOf([200, 204]);
+      });
+
+      pm.test("Delete was successful", function () {
+          if (pm.response.code === 200) {
+              const jsonData = pm.response.json();
+              pm.expect(jsonData.status).to.eql("deleted");
+          }
+      });
+
+      // Clear pet_id after deletion
+      pm.collectionVariables.set("pet_id", "");

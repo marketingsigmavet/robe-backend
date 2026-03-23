@@ -24,13 +24,13 @@ class PetRepository(BaseRepository[Pet, Any, Any]):
     async def delete(self, db: AsyncSession, *, id: Any) -> Pet | None:
         return await super().delete(db, id=id)
 
-    async def get_by_owner_id(self, db: AsyncSession, owner_id: Any) -> Sequence[Pet]:
-        stmt = select(Pet).where(Pet.owner_id == owner_id)
+    async def get_by_user_id(self, db: AsyncSession, user_id: Any) -> Sequence[Pet]:
+        stmt = select(Pet).where(Pet.user_id == user_id)
         result = await db.execute(stmt)
         return result.scalars().all()
 
-    async def get_by_owner_id_and_pet_id(self, db: AsyncSession, owner_id: Any, pet_id: Any) -> Pet | None:
-        stmt = select(Pet).where(Pet.owner_id == owner_id, Pet.pet_id == pet_id)
+    async def get_by_user_id_and_pet_id(self, db: AsyncSession, user_id: Any, pet_id: Any) -> Pet | None:
+        stmt = select(Pet).where(Pet.user_id == user_id, Pet.pet_id == pet_id)
         result = await db.execute(stmt)
         return result.scalars().first()
 

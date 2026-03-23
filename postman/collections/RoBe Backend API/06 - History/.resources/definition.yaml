@@ -1,0 +1,3 @@
+$kind: collection
+name: 06 - History
+description: Chat history endpoints for viewing and managing past chat sessions.

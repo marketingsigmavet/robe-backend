@@ -1,0 +1,23 @@
+$kind: http-request
+name: Get Current User
+method: GET
+url: '{{base_url}}/users/me'
+order: 1000
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has user data", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+      });
+
+      pm.test("User has required fields", function () {
+          const jsonData = pm.response.json();
+          // Check for common user fields
+          pm.expect(jsonData).to.have.property("id");
+      });

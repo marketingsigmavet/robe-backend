@@ -1,0 +1,3 @@
+$kind: collection
+name: 09 - Settings
+description: User settings endpoints for managing preferences and configurations.

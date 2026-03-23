@@ -11,7 +11,7 @@ async def list_pets(
     db: AsyncSession = Depends(get_db)
 ):
     user_id = "stub-id"
-    return await pet_service.get_pets_for_owner(db, user_id)
+    return await pet_service.get_pets_for_user(db, user_id)
 
 @router.post("/")
 async def create_pet(

@@ -1,0 +1,50 @@
+$kind: http-request
+name: Verify OTP
+method: POST
+url: '{{base_url}}/auth/verify-otp'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "channel": "email",
+      "email": "{{test_email}}",
+      "otp_code": "123456"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has tokens", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("access_token");
+          pm.expect(jsonData).to.have.property("refresh_token");
+          pm.expect(jsonData).to.have.property("token_type");
+      });
+
+      pm.test("Token type is bearer", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData.token_type).to.eql("bearer");
+      });
+
+      pm.test("User info is present", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("user");
+          pm.expect(jsonData).to.have.property("is_new_user");
+          pm.expect(jsonData).to.have.property("onboarding_required");
+      });
+
+      // Store tokens for subsequent requests
+      if (pm.response.code === 200) {
+          const jsonData = pm.response.json();
+          pm.collectionVariables.set("access_token", jsonData.access_token);
+          pm.collectionVariables.set("refresh_token", jsonData.refresh_token);
+          console.log("Tokens stored successfully");
+      }

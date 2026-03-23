@@ -1,0 +1,31 @@
+$kind: http-request
+name: Update Current User
+method: PATCH
+url: '{{base_url}}/users/me'
+order: 2000
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "display_name": "Updated Name"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has updated user data", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.be.an("object");
+      });
+
+      pm.test("Update was applied", function () {
+          const jsonData = pm.response.json();
+          pm.expect(jsonData).to.have.property("id");
+      });
