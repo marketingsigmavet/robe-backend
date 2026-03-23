@@ -1,21 +1,19 @@
 $kind: http-request
 name: Request OTP
 method: POST
-url: '{{base_url}}/auth/request-otp'
+url: "{{base_url}}/auth/request-otp"
 order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
       "channel": "email",
-      "email": "{{test_email}}"
+      "email": "isurupdissanayake@gmail.com"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 200 or 201", function () {
           pm.expect(pm.response.code).to.be.oneOf([200, 201]);
@@ -39,3 +37,4 @@ scripts:
           pm.collectionVariables.set("dev_otp", jsonData.dev_otp);
           console.log("Dev OTP stored:", jsonData.dev_otp);
       }
+    language: text/javascript

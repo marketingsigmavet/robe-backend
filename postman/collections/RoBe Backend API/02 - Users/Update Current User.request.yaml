@@ -1,20 +1,18 @@
 $kind: http-request
 name: Update Current User
 method: PATCH
-url: '{{base_url}}/users/me'
+url: "{{base_url}}/users/me"
 order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "display_name": "Updated Name"
+      "full_name": "Test Account"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 200", function () {
           pm.response.to.have.status(200);
@@ -29,3 +27,4 @@ scripts:
           const jsonData = pm.response.json();
           pm.expect(jsonData).to.have.property("id");
       });
+    language: text/javascript
