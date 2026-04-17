@@ -9,11 +9,11 @@ body:
   type: json
   content: |-
     {
-      "pet_name": "Buddy",
+      "pet_name": "Mangus",
       "species_id": "ad54d9ea-d825-492d-aa92-7089c34dac68",
-      "breed_id": "9d9d1449-cd6d-4ff5-916e-ad45f8992c89",
-      "age_years": 3,
-      "weight_kg": 30
+      "breed_id": "b4a26453-4605-4a40-95c9-2c2ec8524bbc",
+      "age_years": 2,
+      "weight_kg": 24
     }
 scripts:
   - type: afterResponse

@@ -1,0 +1,14 @@
+$kind: http-request
+name: Create Product
+method: POST
+url: '{{base_url}}/admin/products'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"product_name\": \"Premium Salmon Kibble\",\n  \"sku\": \"PREM-SALM-001\"\
+    ,\n  \"brand_id\": \"{{brand_id}}\",\n  \"product_category_id\": \"{{category_id}}\"\
+    ,\n  \"species_ids\": [\n    \"{{species_id}}\"\n  ],\n  \"breed_ids\": []\n}"

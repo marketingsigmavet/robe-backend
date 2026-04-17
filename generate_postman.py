@@ -6,6 +6,7 @@ base_dir = r"E:\Robe\robe-backend\postman\collections\RoBe Backend API"
 folders = [
     "14 - Admin Product Brands",
     "15 - Admin Product Categories",
+    "16 - Admin Products",
 ]
 
 for f in folders:
@@ -48,3 +49,10 @@ write_req("15 - Admin Product Categories", "Get Category", "GET", "{{base_url}}/
 write_req("15 - Admin Product Categories", "Create Category", "POST", "{{base_url}}/admin/product-categories", "{\n  \"category_name\": \"Dry Food\",\n  \"description\": \"Kibble and dry variants\"\n}")
 write_req("15 - Admin Product Categories", "Update Category", "PATCH", "{{base_url}}/admin/product-categories/{{category_id}}", "{\n  \"description\": \"Updated Category Info\"\n}")
 write_req("15 - Admin Product Categories", "Delete Category", "DELETE", "{{base_url}}/admin/product-categories/{{category_id}}")
+
+# 16 - Admin Products
+write_req("16 - Admin Products", "List Products", "GET", "{{base_url}}/admin/products")
+write_req("16 - Admin Products", "Get Product", "GET", "{{base_url}}/admin/products/{{product_id}}")
+write_req("16 - Admin Products", "Create Product", "POST", "{{base_url}}/admin/products", "{\n  \"product_name\": \"Premium Salmon Kibble\",\n  \"sku\": \"PREM-SALM-001\",\n  \"brand_id\": \"{{brand_id}}\",\n  \"product_category_id\": \"{{category_id}}\",\n  \"species_ids\": [\n    \"{{species_id}}\"\n  ],\n  \"breed_ids\": []\n}")
+write_req("16 - Admin Products", "Update Product", "PATCH", "{{base_url}}/admin/products/{{product_id}}", "{\n  \"description\": \"Updated Product Info\",\n  \"species_ids\": []\n}")
+write_req("16 - Admin Products", "Delete Product", "DELETE", "{{base_url}}/admin/products/{{product_id}}")
