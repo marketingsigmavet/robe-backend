@@ -1,0 +1,13 @@
+$kind: http-request
+name: Create Brand
+method: POST
+url: '{{base_url}}/admin/product-brands'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"brand_name\": \"Acme Pet Corp\",\n  \"description\": \"Quality\
+    \ products\",\n  \"website_url\": \"https://acme.com\"\n}"

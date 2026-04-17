@@ -13,6 +13,8 @@ from app.api.routers import (
     admin_breeds,
     admin_roles,
     admin_topics,
+    admin_product_brands,
+    admin_product_categories,
 )
 
 api_v1_router = APIRouter()
@@ -30,3 +32,5 @@ api_v1_router.include_router(admin_species.router, prefix="/admin/species", tags
 api_v1_router.include_router(admin_breeds.router, prefix="/admin/breeds", tags=["Admin", "Breeds"])
 api_v1_router.include_router(admin_roles.router, prefix="/admin/roles", tags=["Admin", "Roles"])
 api_v1_router.include_router(admin_topics.router, prefix="/admin/topics", tags=["Admin", "Topics"])
+api_v1_router.include_router(admin_product_brands.router, prefix="/admin/product-brands", tags=["Admin", "Product Brands"])
+api_v1_router.include_router(admin_product_categories.router, prefix="/admin/product-categories", tags=["Admin", "Product Categories"])

@@ -1,0 +1,7 @@
+$kind: http-request
+name: List Brands
+method: GET
+url: '{{base_url}}/admin/product-brands'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

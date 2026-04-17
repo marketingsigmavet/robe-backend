@@ -1,0 +1,13 @@
+$kind: http-request
+name: Create Category
+method: POST
+url: '{{base_url}}/admin/product-categories'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"category_name\": \"Dry Food\",\n  \"description\": \"Kibble and\
+    \ dry variants\"\n}"

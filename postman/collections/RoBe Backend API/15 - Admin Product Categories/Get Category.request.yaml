@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get Category
+method: GET
+url: '{{base_url}}/admin/product-categories/{{category_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

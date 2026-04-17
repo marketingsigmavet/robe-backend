@@ -15,6 +15,10 @@ if TYPE_CHECKING:
     from app.models.product_brands import ProductBrand
     from app.models.product_categories import ProductCategory
     from app.models.product_recommendations import ProductRecommendation
+    from app.models.pet_species import PetSpecies
+    from app.models.breeds import Breed
+
+from app.models.product_tags import product_species_link, product_breeds_link
 
 
 class Product(Base):
@@ -46,7 +50,6 @@ class Product(Base):
     sku: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
 
     description: Mapped[str | None] = mapped_column(Text(), nullable=True)
-    species_scope: Mapped[str | None] = mapped_column(String(100), nullable=True)
     life_stage: Mapped[str | None] = mapped_column(String(100), nullable=True)
 
     usage_guidelines: Mapped[str | None] = mapped_column(Text(), nullable=True)
@@ -72,6 +75,16 @@ class Product(Base):
 
     brand: Mapped["ProductBrand"] = relationship(back_populates="products", lazy="selectin")
     category: Mapped["ProductCategory"] = relationship(back_populates="products", lazy="selectin")
+    
+    species: Mapped[list["PetSpecies"]] = relationship(
+        secondary=product_species_link,
+        lazy="selectin",
+    )
+    breeds: Mapped[list["Breed"]] = relationship(
+        secondary=product_breeds_link,
+        lazy="selectin",
+    )
+    
     product_recommendations: Mapped[list["ProductRecommendation"]] = relationship(
         back_populates="product",
         lazy="selectin",
