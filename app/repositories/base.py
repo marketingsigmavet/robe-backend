@@ -1,5 +1,5 @@
 from typing import Any, Generic, TypeVar, Sequence
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.base import Base
 
@@ -14,10 +14,16 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     async def get(self, db: AsyncSession, id: Any) -> ModelType | None:
-        return await db.get(self.model, id)
+        obj = await db.get(self.model, id)
+        if obj and getattr(obj, "is_deleted", False):
+            return None
+        return obj
 
     async def get_multi(self, db: AsyncSession, *, skip: int = 0, limit: int = 100) -> Sequence[ModelType]:
-        stmt = select(self.model).offset(skip).limit(limit)
+        stmt = select(self.model)
+        if hasattr(self.model, "is_deleted"):
+            stmt = stmt.where(self.model.is_deleted == False)
+        stmt = stmt.offset(skip).limit(limit)
         result = await db.execute(stmt)
         return result.scalars().all()
 
@@ -54,6 +60,11 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def delete(self, db: AsyncSession, *, id: Any) -> ModelType | None:
         obj = await db.get(self.model, id)
         if obj:
-            await db.delete(obj)
+            if hasattr(obj, "is_deleted"):
+                obj.is_deleted = True
+                obj.deleted_at = func.now()
+                db.add(obj)
+            else:
+                await db.delete(obj)
             await db.commit()
         return obj

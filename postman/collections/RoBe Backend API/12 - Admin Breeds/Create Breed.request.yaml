@@ -1,0 +1,13 @@
+$kind: http-request
+name: Create Breed
+method: POST
+url: '{{base_url}}/admin/breeds'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"species_id\": \"{{species_id}}\",\n  \"breed_name\": \"Siamese\"\
+    ,\n  \"breed_notes\": \"\"\n}"

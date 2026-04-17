@@ -1,0 +1,12 @@
+$kind: http-request
+name: Update Species
+method: PATCH
+url: '{{base_url}}/admin/species/{{species_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"description\": \"Updated Cat Description\"\n}"

@@ -9,6 +9,9 @@ from app.api.routers import (
     recommendations,
     notifications,
     settings,
+    admin_species,
+    admin_breeds,
+    admin_roles,
 )
 
 api_v1_router = APIRouter()
@@ -22,3 +25,6 @@ api_v1_router.include_router(history.router, prefix="/history", tags=["History"]
 api_v1_router.include_router(recommendations.router, prefix="/recommendations", tags=["Recommendations"])
 api_v1_router.include_router(notifications.router, prefix="/notifications", tags=["Notifications"])
 api_v1_router.include_router(settings.router, prefix="/settings", tags=["Settings"])
+api_v1_router.include_router(admin_species.router, prefix="/admin/species", tags=["Admin", "Pet Species"])
+api_v1_router.include_router(admin_breeds.router, prefix="/admin/breeds", tags=["Admin", "Breeds"])
+api_v1_router.include_router(admin_roles.router, prefix="/admin/roles", tags=["Admin", "Roles"])

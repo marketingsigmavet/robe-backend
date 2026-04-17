@@ -1,0 +1,7 @@
+$kind: http-request
+name: Delete Breed
+method: DELETE
+url: '{{base_url}}/admin/breeds/{{breed_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

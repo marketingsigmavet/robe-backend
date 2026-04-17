@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get Species
+method: GET
+url: '{{base_url}}/admin/species/{{species_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

@@ -42,3 +42,13 @@ async def get_current_active_user(
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+class RoleChecker:
+    def __init__(self, allowed_roles: list[str]):
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, user: User = Depends(get_current_active_user)) -> User:
+        user_role_names = [ur.role.role_name for ur in user.user_roles]
+        if not any(role in user_role_names for role in self.allowed_roles):
+            raise HTTPException(status_code=403, detail="Not enough permissions")
+        return user

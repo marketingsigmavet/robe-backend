@@ -1,0 +1,12 @@
+$kind: http-request
+name: Assign Role to User
+method: POST
+url: '{{base_url}}/admin/roles/users/{{user_id}}/roles'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"role_id\": \"{{role_id}}\"\n}"

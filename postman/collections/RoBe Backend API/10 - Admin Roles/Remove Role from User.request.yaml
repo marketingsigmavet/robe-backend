@@ -1,0 +1,7 @@
+$kind: http-request
+name: Remove Role from User
+method: DELETE
+url: '{{base_url}}/admin/roles/users/{{user_id}}/roles/{{role_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

@@ -24,3 +24,11 @@ async def update_current_user_profile(
 ):
     updated_user = await user_service.update_me(db, user=current_user, update_data=payload.model_dump(exclude_unset=True))
     return updated_user
+
+@router.delete("/me")
+async def delete_current_user(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    await user_service.deactivate_user(db, db_obj=current_user)
+    return {"status": "success", "message": "User account deactivated"}
