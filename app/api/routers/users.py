@@ -32,3 +32,4 @@ async def delete_current_user(
 ):
     await user_service.deactivate_user(db, db_obj=current_user)
     return {"status": "success", "message": "User account deactivated"}
+

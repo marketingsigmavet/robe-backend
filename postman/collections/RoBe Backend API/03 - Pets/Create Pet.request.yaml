@@ -1,24 +1,22 @@
 $kind: http-request
 name: Create Pet
 method: POST
-url: '{{base_url}}/pets/'
+url: "{{base_url}}/pets/"
 order: 2000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "name": "Buddy",
-      "species": "dog",
-      "breed": "Golden Retriever",
+      "pet_name": "Buddy",
+      "species_id": "ad54d9ea-d825-492d-aa92-7089c34dac68",
+      "breed_id": "9d9d1449-cd6d-4ff5-916e-ad45f8992c89",
       "age_years": 3,
       "weight_kg": 30
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 200 or 201", function () {
           pm.expect(pm.response.code).to.be.oneOf([200, 201]);
@@ -42,3 +40,4 @@ scripts:
               console.log("Created pet_id:", jsonData.id);
           }
       }
+    language: text/javascript

@@ -1,24 +1,20 @@
 $kind: http-request
 name: Update Pet
 method: PATCH
-url: '{{base_url}}/pets/:id'
+url: "{{base_url}}/pets/:id"
 order: 4000
 pathVariables:
-  - key: id
-    value: '{{pet_id}}'
+  id: "{{pet_id}}"
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "name": "Buddy Updated",
-      "weight_kg": 32
+      "color": "Brown"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 200", function () {
           pm.response.to.have.status(200);
@@ -28,3 +24,4 @@ scripts:
           const jsonData = pm.response.json();
           pm.expect(jsonData).to.be.an("object");
       });
+    language: text/javascript

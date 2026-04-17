@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get Active Topic
+method: GET
+url: '{{base_url}}/topics/{{topic_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

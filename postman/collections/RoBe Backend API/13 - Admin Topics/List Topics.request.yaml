@@ -1,0 +1,7 @@
+$kind: http-request
+name: List Topics
+method: GET
+url: '{{base_url}}/admin/topics'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

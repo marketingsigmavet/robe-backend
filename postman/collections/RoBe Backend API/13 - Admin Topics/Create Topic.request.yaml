@@ -1,0 +1,13 @@
+$kind: http-request
+name: Create Topic
+method: POST
+url: '{{base_url}}/admin/topics'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"topic_name\": \"General Health\",\n  \"slug\": \"general-health\"\
+    ,\n  \"description\": \"Talk about general pet health.\"\n}"

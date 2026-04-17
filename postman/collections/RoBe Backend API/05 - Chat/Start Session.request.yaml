@@ -1,0 +1,12 @@
+$kind: http-request
+name: Start Session
+method: POST
+url: '{{base_url}}/chat/sessions'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
+body:
+  type: json
+  content: "{\n  \"topic_id\": \"{{topic_id}}\"\n}"

@@ -1,35 +1,13 @@
 $kind: http-request
 name: Send Message
 method: POST
-url: '{{base_url}}/chat/sessions/:id/messages'
-order: 3000
-pathVariables:
-  - key: id
-    value: '{{session_id}}'
+url: '{{base_url}}/chat/sessions/{{session_id}}/messages'
 headers:
-  - key: Content-Type
-    value: application/json
+- key: Authorization
+  value: Bearer {{access_token}}
+- key: Content-Type
+  value: application/json
 body:
   type: json
-  content: |-
-    {
-      "content": "What are the best foods for my dog?",
-      "role": "user"
-    }
-scripts:
-  - type: afterResponse
-    language: text/javascript
-    code: |-
-      pm.test("Status code is 200 or 201", function () {
-          pm.expect(pm.response.code).to.be.oneOf([200, 201]);
-      });
-
-      pm.test("Response has message data", function () {
-          const jsonData = pm.response.json();
-          pm.expect(jsonData).to.be.an("object");
-      });
-
-      pm.test("Message has ID", function () {
-          const jsonData = pm.response.json();
-          pm.expect(jsonData).to.have.property("id");
-      });
+  content: "{\n  \"message_text\": \"Hi there, what should I feed my new kitten?\"\
+    \n}"

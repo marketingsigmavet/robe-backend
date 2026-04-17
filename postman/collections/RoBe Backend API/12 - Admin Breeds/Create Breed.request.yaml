@@ -1,13 +1,15 @@
 $kind: http-request
 name: Create Breed
 method: POST
-url: '{{base_url}}/admin/breeds'
+url: "{{base_url}}/admin/breeds"
 headers:
-- key: Authorization
-  value: Bearer {{access_token}}
-- key: Content-Type
-  value: application/json
+  Authorization: Bearer {{access_token}}
+  Content-Type: application/json
 body:
   type: json
-  content: "{\n  \"species_id\": \"{{species_id}}\",\n  \"breed_name\": \"Siamese\"\
-    ,\n  \"breed_notes\": \"\"\n}"
+  content: |-
+    {
+      "species_id": "{{species_id}}",
+      "breed_name": "Labrador Retriever",
+      "breed_notes": "The Labrador Retriever, also known simply as the Labrador or Lab, is a British breed of retriever gun dog."
+    }

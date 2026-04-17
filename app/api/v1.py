@@ -12,6 +12,7 @@ from app.api.routers import (
     admin_species,
     admin_breeds,
     admin_roles,
+    admin_topics,
 )
 
 api_v1_router = APIRouter()
@@ -28,3 +29,4 @@ api_v1_router.include_router(settings.router, prefix="/settings", tags=["Setting
 api_v1_router.include_router(admin_species.router, prefix="/admin/species", tags=["Admin", "Pet Species"])
 api_v1_router.include_router(admin_breeds.router, prefix="/admin/breeds", tags=["Admin", "Breeds"])
 api_v1_router.include_router(admin_roles.router, prefix="/admin/roles", tags=["Admin", "Roles"])
+api_v1_router.include_router(admin_topics.router, prefix="/admin/topics", tags=["Admin", "Topics"])
