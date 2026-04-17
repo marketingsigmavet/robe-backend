@@ -16,6 +16,9 @@ from app.api.routers import (
     admin_product_brands,
     admin_product_categories,
     admin_products,
+    products,
+    product_brands,
+    product_categories,
 )
 
 api_v1_router = APIRouter()
@@ -36,3 +39,8 @@ api_v1_router.include_router(admin_topics.router, prefix="/admin/topics", tags=[
 api_v1_router.include_router(admin_product_brands.router, prefix="/admin/product-brands", tags=["Admin", "Product Brands"])
 api_v1_router.include_router(admin_product_categories.router, prefix="/admin/product-categories", tags=["Admin", "Product Categories"])
 api_v1_router.include_router(admin_products.router, prefix="/admin/products", tags=["Admin", "Products"])
+
+# User Endpoints
+api_v1_router.include_router(products.router, prefix="/products", tags=["Products"])
+api_v1_router.include_router(product_brands.router, prefix="/product-brands", tags=["Product Brands"])
+api_v1_router.include_router(product_categories.router, prefix="/product-categories", tags=["Product Categories"])

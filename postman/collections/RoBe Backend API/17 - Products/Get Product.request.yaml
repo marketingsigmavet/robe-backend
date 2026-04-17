@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get Product
+method: GET
+url: '{{base_url}}/products/{{product_id}}'
+headers:
+- key: Authorization
+  value: Bearer {{access_token}}

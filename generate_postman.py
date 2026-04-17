@@ -7,6 +7,7 @@ folders = [
     "14 - Admin Product Brands",
     "15 - Admin Product Categories",
     "16 - Admin Products",
+    "17 - Products",
 ]
 
 for f in folders:
@@ -56,3 +57,9 @@ write_req("16 - Admin Products", "Get Product", "GET", "{{base_url}}/admin/produ
 write_req("16 - Admin Products", "Create Product", "POST", "{{base_url}}/admin/products", "{\n  \"product_name\": \"Premium Salmon Kibble\",\n  \"sku\": \"PREM-SALM-001\",\n  \"brand_id\": \"{{brand_id}}\",\n  \"product_category_id\": \"{{category_id}}\",\n  \"species_ids\": [\n    \"{{species_id}}\"\n  ],\n  \"breed_ids\": []\n}")
 write_req("16 - Admin Products", "Update Product", "PATCH", "{{base_url}}/admin/products/{{product_id}}", "{\n  \"description\": \"Updated Product Info\",\n  \"species_ids\": []\n}")
 write_req("16 - Admin Products", "Delete Product", "DELETE", "{{base_url}}/admin/products/{{product_id}}")
+
+# 17 - Products
+write_req("17 - Products", "List Products", "GET", "{{base_url}}/products")
+write_req("17 - Products", "Get Product", "GET", "{{base_url}}/products/{{product_id}}")
+write_req("17 - Products", "List Brands", "GET", "{{base_url}}/product-brands")
+write_req("17 - Products", "List Categories", "GET", "{{base_url}}/product-categories")
