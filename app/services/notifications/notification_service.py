@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.notifications import Notification
 from app.repositories.notification_repository import notification_repository
 from app.schemas.notifications import NotificationType
+from app.tasks.notification_tasks import deliver_notification_task
 
 logger = structlog.get_logger(__name__)
 
@@ -60,6 +61,10 @@ class NotificationService:
                 "notification_type": notification_type.value,
             },
         )
+
+        # Offload actual delivery (push, etc) to background
+        deliver_notification_task.delay(str(notif.notification_id))
+
         logger.info(
             "notification_sent",
             notification_id=str(notif.notification_id),

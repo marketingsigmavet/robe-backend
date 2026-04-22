@@ -13,5 +13,4 @@ COPY alembic.ini /app/alembic.ini
 COPY pyproject.toml /app/pyproject.toml
 RUN pip install --no-cache-dir .
 
-CMD ["celery", "-A", "app.tasks.celery_app:celery_app", "worker", "--loglevel=INFO"]
-
+CMD ["celery", "-A", "app.core.celery_app:celery_app", "worker", "--loglevel=INFO"]
