@@ -1,19 +1,51 @@
+"""Product Category schemas."""
+
+from __future__ import annotations
+
 import uuid
-from pydantic import BaseModel
-from typing import Optional
+from datetime import datetime
 
-class ProductCategoryBase(BaseModel):
-    category_name: str
-    description: Optional[str] = None
+from pydantic import BaseModel, Field
 
-class ProductCategoryCreate(ProductCategoryBase):
-    pass
+
+# ---------------------------------------------------------------------------
+# Request
+# ---------------------------------------------------------------------------
+
+class ProductCategoryCreate(BaseModel):
+    category_name: str = Field(..., max_length=200)
+    description: str | None = None
+    image_url: str | None = Field(None, max_length=500)
+    is_active: bool = True
+
 
 class ProductCategoryUpdate(BaseModel):
-    category_name: Optional[str] = None
-    description: Optional[str] = None
+    category_name: str | None = Field(None, max_length=200)
+    description: str | None = None
+    image_url: str | None = Field(None, max_length=500)
+    is_active: bool | None = None
 
-class ProductCategoryResponse(ProductCategoryBase):
+
+# ---------------------------------------------------------------------------
+# Response
+# ---------------------------------------------------------------------------
+
+class ProductCategoryResponse(BaseModel):
     product_category_id: uuid.UUID
+    category_name: str
+    description: str | None = None
+    image_url: str | None = None
+    is_active: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ProductCategorySummary(BaseModel):
+    """Lightweight category info embedded in product responses."""
+
+    product_category_id: uuid.UUID
+    category_name: str
 
     model_config = {"from_attributes": True}

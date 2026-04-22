@@ -4,10 +4,8 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-import sqlalchemy as sa
-from sqlalchemy import Boolean, DateTime, ForeignKey, Numeric, String, Text, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Index
 
 from app.db.base import Base
 
@@ -60,6 +58,8 @@ class Product(Base):
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=True)
+    is_deleted: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -75,7 +75,7 @@ class Product(Base):
 
     brand: Mapped["ProductBrand"] = relationship(back_populates="products", lazy="selectin")
     category: Mapped["ProductCategory"] = relationship(back_populates="products", lazy="selectin")
-    
+
     species: Mapped[list["PetSpecies"]] = relationship(
         secondary=product_species_link,
         lazy="selectin",
@@ -84,9 +84,8 @@ class Product(Base):
         secondary=product_breeds_link,
         lazy="selectin",
     )
-    
+
     product_recommendations: Mapped[list["ProductRecommendation"]] = relationship(
         back_populates="product",
         lazy="selectin",
     )
-
