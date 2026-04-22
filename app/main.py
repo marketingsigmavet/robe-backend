@@ -4,6 +4,7 @@ import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.routers.health import router as health_router
@@ -26,7 +27,12 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
     configure_logging(settings.log_level)
 
-    logging.getLogger(__name__).info("Starting %s (env=%s)", settings.app_name, settings.app_env)
+    logging.getLogger(__name__).info(
+        "Starting %s (env=%s, aws=%s)",
+        settings.app_name,
+        settings.app_env.value,
+        settings.is_aws,
+    )
 
     # Init infrastructure (engine, cache client placeholders, etc.)
     init_engine(settings.database_url)
@@ -34,10 +40,7 @@ async def lifespan(app: FastAPI):
     # Create Redis client lazily; for now it's just a placeholder for Celery/other services.
     redis_client = None
     if Redis is not object:
-        from app.core.config import get_redis_url
-
-        redis_url = get_redis_url()
-        redis_client = Redis.from_url(redis_url, decode_responses=True)
+        redis_client = Redis.from_url(settings.redis_url, decode_responses=True)
 
     app.state.redis = redis_client
     app.state.celery_app = celery_app
@@ -56,10 +59,22 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
         version=settings.version,
-        openapi_url="/openapi.json",
+        openapi_url="/openapi.json" if not settings.is_production else None,
+        docs_url="/docs" if not settings.is_production else None,
+        redoc_url="/redoc" if not settings.is_production else None,
         lifespan=lifespan,
     )
 
+    # ── CORS ────────────────────────────────────────────────────────
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    # ── Exception Handlers ──────────────────────────────────────────
     @app.exception_handler(AppError)
     async def app_error_handler(request: Request, exc: AppError):
         return JSONResponse(
@@ -76,4 +91,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-

@@ -9,11 +9,11 @@ body:
   type: json
   content: |-
     {
-      "pet_name": "Mangus",
-      "species_id": "ad54d9ea-d825-492d-aa92-7089c34dac68",
-      "breed_id": "b4a26453-4605-4a40-95c9-2c2ec8524bbc",
-      "age_years": 2,
-      "weight_kg": 24
+      "pet_name": "Simba False",
+      "species_id": "ad54d9ea-d825-492d-aa92-7089c34dac61",
+      "breed_id": "b4a26453-4605-4a40-95c9-2c2ec8524bb",
+      "age_years": 5,
+      "weight_kg": 32
     }
 scripts:
   - type: afterResponse

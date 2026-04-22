@@ -20,7 +20,7 @@ services:
       context: ..
       dockerfile: docker/api.Dockerfile
     environment:
-      APP_ENV: development
+      APP_ENV: local
       LOG_LEVEL: INFO
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/robe
       REDIS_URL: redis://redis:6379/0
@@ -37,7 +37,7 @@ services:
       context: ..
       dockerfile: docker/worker.Dockerfile
     environment:
-      APP_ENV: development
+      APP_ENV: local
       LOG_LEVEL: INFO
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/robe
       REDIS_URL: redis://redis:6379/0
