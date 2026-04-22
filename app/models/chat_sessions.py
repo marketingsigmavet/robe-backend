@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from app.models.ai_personalities import AIPersonality
     from app.models.pets import Pet
     from app.models.topics import Topic
+    from app.models.topic_questions import TopicQuestion
     from app.models.messages import Message
     from app.models.chat_attachments import ChatAttachment
     from app.models.saved_chats import SavedChat
@@ -50,6 +51,11 @@ class ChatSession(Base):
         nullable=True,
         index=True,
     )
+    question_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("topic_questions.question_id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     personality_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("ai_personalities.personality_id", ondelete="SET NULL"),
         nullable=True,
@@ -62,6 +68,9 @@ class ChatSession(Base):
 
     is_general_chat: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
     is_archived: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
+    
+    is_deleted: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     started_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -74,6 +83,7 @@ class ChatSession(Base):
     user: Mapped["User"] = relationship(back_populates="chat_sessions", lazy="selectin")
     pet: Mapped["Pet | None"] = relationship(back_populates="chat_sessions", lazy="selectin")
     topic: Mapped["Topic | None"] = relationship(back_populates="chat_sessions", lazy="selectin")
+    question: Mapped["TopicQuestion | None"] = relationship(lazy="selectin")
     personality: Mapped["AIPersonality | None"] = relationship(
         back_populates="chat_sessions", lazy="selectin"
     )
@@ -98,4 +108,3 @@ class ChatSession(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
-
