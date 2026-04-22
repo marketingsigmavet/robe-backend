@@ -2,11 +2,16 @@ from __future__ import annotations
 
 import uuid
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Boolean, DateTime, Integer, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+
+if TYPE_CHECKING:
+    from app.models.chat_sessions import ChatSession
+    from app.models.topic_questions import TopicQuestion
 
 
 class Topic(Base):
@@ -22,11 +27,28 @@ class Topic(Base):
     sort_order: Mapped[int] = mapped_column(Integer(), nullable=False, default=0)
     is_active: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=True)
 
+    is_deleted: Mapped[bool] = mapped_column(Boolean(), nullable=False, default=False)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
         nullable=False,
     )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+        nullable=False,
+    )
 
-    chat_sessions: Mapped[list["ChatSession"]] = relationship(back_populates="topic", lazy="selectin")
-
+    # ── Relationships ──────────────────────────────────────────────────
+    questions: Mapped[list["TopicQuestion"]] = relationship(
+        back_populates="topic",
+        cascade="all, delete-orphan",
+        lazy="selectin",
+        order_by="TopicQuestion.sort_order",
+    )
+    chat_sessions: Mapped[list["ChatSession"]] = relationship(
+        back_populates="topic", lazy="selectin"
+    )

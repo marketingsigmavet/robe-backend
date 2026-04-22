@@ -17,6 +17,7 @@ from app.models.search_history import SearchHistory
 from app.models.subscriptions import Subscription
 from app.models.roles import Role
 from app.models.topics import Topic
+from app.models.topic_questions import TopicQuestion
 from app.models.user_preferences import UserPreference
 from app.models.user_roles import UserRole
 from app.models.users import User
@@ -30,6 +31,7 @@ __all__ = [
     "Breed",
     "Pet",
     "Topic",
+    "TopicQuestion",
     "AIPersonality",
     "ChatSession",
     "Message",
