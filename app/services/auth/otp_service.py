@@ -1,7 +1,12 @@
 import random
+
+import structlog
 from fastapi import HTTPException, status
+
 from app.core.config import get_settings
 from app.cache.keys import get_otp_challenge_key, get_otp_attempts_key, get_otp_cooldown_key
+
+logger = structlog.get_logger(__name__)
 
 class OtpService:
     def generate_otp(self) -> str:
@@ -27,7 +32,14 @@ class OtpService:
         await redis_client.setex(attempts_key, settings.otp_expire_seconds, 0)
         await redis_client.setex(cooldown_key, settings.otp_resend_cooldown_seconds, "1")
 
-        print(f"[{channel.upper()}] Sent OTP {otp_code} to {identifier}")
+        logger.debug(
+            "otp_sent",
+            channel=channel,
+            identifier_hint=self._mask_identifier(channel, identifier),
+        )
+        # In debug mode, also log the actual code (local/dev only).
+        if settings.debug_mode:
+            logger.debug("otp_code_debug", otp_code=otp_code, identifier=identifier)
 
         masked_identifier = self._mask_identifier(channel, identifier)
         response = {

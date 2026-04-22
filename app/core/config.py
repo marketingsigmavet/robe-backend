@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from enum import StrEnum
 from functools import lru_cache
 from typing import Any
@@ -27,6 +28,8 @@ from typing import Any
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# structlog may not be configured yet when Settings is first instantiated,
+# so we use stdlib as a fallback logger for the config module itself.
 logger = logging.getLogger(__name__)
 
 
